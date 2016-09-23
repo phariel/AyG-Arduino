@@ -91,7 +91,10 @@ void loop() {
 void dump_byte_array(byte *buffer, byte bufferSize) {
   Serial.print("Result:[");
   for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+    if (i != 0) {
+      Serial.print(buffer[i] < 0x10 ? " 0" : ":");
+    }
+
     Serial.print(buffer[i], HEX);
   }
   Serial.print("]");
