@@ -11,8 +11,11 @@
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
+    "kafka-node": "^0.5.8",
     "less-middleware": "1.0.x",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
+    "node-cache": "^4.1.0",
+    "serve-favicon": "~2.3.0",
+    "when": "^3.7.7"
   }
 }
