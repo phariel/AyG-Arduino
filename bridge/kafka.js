@@ -11,7 +11,13 @@ var exportObj = {};
 var errorHandle = function (err) {
     console.log('Kafka met a problem: ');
     console.log(err);
-    console.log('====================');
+    console.log('=====================');
+};
+
+var printData = function (data) {
+    console.log('Kafka send: ');
+    console.log(data);
+    console.log('=====================');
 };
 
 exportObj.generate = function (clientUrl, sendCallback) {
@@ -24,7 +30,11 @@ exportObj.generate = function (clientUrl, sendCallback) {
         generateDeferred.resolve('ready');
         exportObj.isReady = true;
         exportObj.send = function (dataJson) {
-            payloads.messages = JSON.stringify(dataJson);
+            dataJson = JSON.stringify(dataJson);
+            payloads[0].messages = dataJson;
+
+            printData(JSON.stringify(payloads));
+
             producer.send(payloads, function (err, data) {
                 if (err) {
                     errorHandle(err);
