@@ -10,13 +10,35 @@
     AyG Console
 </h1>
 <div class="ayg-row">
-    <input type="text" class="form-control text-kafka" placeholder="10.59.6.97:2181/kafka"/>
+    <label>Kafka address: </label>
+    <input type="text" class="form-control text-input text-kafka" placeholder="10.59.6.97:2181/kafka"/>
+</div>
+<div class="ayg-row">
+    <label>Location ID: </label>
+    <input type="text" class="form-control text-input text-location" placeholder="0"/>
+</div>
+<div class="ayg-row">
     <button class="btn btn-primary btn-start">Start</button>
 </div>
 <div class="ayg-row ayg-result">
     <h3>Result:</h3>
 </div>
 <script src="/js/jquery.min.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+<script src="/js/require.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    requirejs.config({
+
+        baseUrl: '/js',
+        paths: {
+            jquery: 'jquery.min',
+            moment: 'moment.min'
+        }
+    });
+
+    // Start the main app logic.
+    requirejs(['main'], function (main) {
+        main();
+    });
+</script>
 </body>
 </html>

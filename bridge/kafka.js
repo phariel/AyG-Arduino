@@ -8,7 +8,13 @@ var payloads = [
 var producer;
 var exportObj = {};
 
-exportObj.generate = function (clientUrl) {
+var errorHandle = function (err) {
+    console.log('Kafka met a problem: ');
+    console.log(err);
+    console.log('====================');
+};
+
+exportObj.generate = function (clientUrl, sendCallback) {
     var client = new kafka.Client(clientUrl);
     var generateDeferred = when.defer();
 
@@ -17,26 +23,20 @@ exportObj.generate = function (clientUrl) {
     producer.on('ready', function () {
         generateDeferred.resolve('ready');
         exportObj.isReady = true;
-        exportObj.send = function (dataArray) {
-            var sendPromise = when.promise();
-
-            payloads.messages = JSON.stringify(dataArray);
+        exportObj.send = function (dataJson) {
+            payloads.messages = JSON.stringify(dataJson);
             producer.send(payloads, function (err, data) {
                 if (err) {
-                    sendPromise.reject(err);
+                    errorHandle(err);
                 } else {
-                    sendPromise.resolve(data);
+                    sendCallback(data);
                 }
             });
-
-            return sendPromise;
         };
     });
 
     producer.on('error', function (err) {
-        console.log('Kafka met a problem: ');
-        console.log(err);
-        console.log('====================');
+        errorHandle(err);
     });
 
     return generateDeferred.promise;

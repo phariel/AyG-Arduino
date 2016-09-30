@@ -8,13 +8,18 @@ router.get('/', function (req, res) {
 });
 
 router.post('/start', function (req, res) {
-    core.start(req.body.kafkaUrl);
+    core.start(req.body.kafkaUrl, req.body.locationId);
     res.end("{}");
 });
 
 router.get('/start-status', function (req, res) {
     var status = core.getServiceStatus();
-    res.end(JSON.stringify(status));
+    res.json(status);
+});
+
+router.get('/updated', function (req, res) {
+    var data = core.getUpdatedData();
+    res.json(data);
 });
 
 module.exports = router;

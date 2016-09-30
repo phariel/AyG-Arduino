@@ -3,8 +3,15 @@ var kafka = require('./kafka').entity;
 var NodeCache = require('node-cache');
 var rfid = new NodeCache();
 var exportObj = {};
+var lastTimeRfid;
+var lastTimeKafka;
+var location;
 
-rfid.set('record', []);
+const RECORD = 'record';
+const KAFKA_RESPONSE = 'kafkaResponse';
+
+rfid.set(RECORD, []);
+rfid.set(KAFKA_RESPONSE, []);
 
 var hexToString = function (data) {
     var val = '';
@@ -24,16 +31,83 @@ var parseData = function (data) {
     return hexToString(data);
 };
 
-exportObj.onData = function (data) {
-    var rfidRecord = rfid.get('record');
-    rfidRecord.push({
-        value: parseData(data),
-        timestamp: Date.now()
-    });
-    rfid.set('record', rfidRecord);
+var kafkaSend = function (data) {
+    var sendData = {
+        rfidTagId: data,
+        locationId: location
+    };
+    kafka.send(sendData);
 };
 
-exportObj.start = function (kafkaUrl) {
+var kafkaSendCallback = function (data) {
+    var kafkaResponse = rfid.get(KAFKA_RESPONSE);
+
+    kafkaResponse.push({
+        value: JSON.stringify(data),
+        timestamp: Date.now()
+    });
+
+    rfid.set(KAFKA_RESPONSE, kafkaResponse);
+};
+
+var updatedDataFilter = function (type) {
+    var rfidRecord = rfid.get(type);
+    var returnValue;
+    var temp = [];
+
+    if (type === RECORD) {
+        if (!lastTimeRfid) {
+            returnValue = rfidRecord;
+        } else {
+            rfidRecord.forEach(function (v) {
+                if (v.timestamp > lastTimeRfid) {
+                    temp.push(v);
+                }
+            });
+            returnValue = temp;
+        }
+
+        if (rfidRecord.length > 0) {
+            lastTimeRfid = rfidRecord[rfidRecord.length - 1].timestamp;
+        }
+    }
+
+    if (type === KAFKA_RESPONSE) {
+        if (!lastTimeKafka) {
+            returnValue = rfidRecord;
+        } else {
+
+            rfidRecord.forEach(function (v) {
+                if (v.timestamp > lastTimeKafka) {
+                    temp.push(v);
+                }
+            });
+            returnValue = temp;
+        }
+
+        if (rfidRecord.length > 0) {
+            lastTimeKafka = rfidRecord[rfidRecord.length - 1].timestamp;
+        }
+    }
+
+    return returnValue;
+};
+
+exportObj.onData = function (data) {
+    var rfidRecord = rfid.get(RECORD);
+
+    data = parseData(data);
+    kafkaSend(data);
+
+    rfidRecord.push({
+        value: data,
+        timestamp: Date.now()
+    });
+    rfid.set(RECORD, rfidRecord);
+};
+
+exportObj.start = function (kafkaUrl, locationId) {
+    location = locationId;
     if (!exportObj.isArduinoReady) {
         arduino.generate(this.onData).then(function (status) {
             if (status === "ready") {
@@ -43,7 +117,7 @@ exportObj.start = function (kafkaUrl) {
     }
 
     if (!exportObj.isKafkaReady) {
-        kafka.generate(kafkaUrl).then(function (status) {
+        kafka.generate(kafkaUrl, kafkaSendCallback).then(function (status) {
             if (status === "ready") {
                 exportObj.isKafkaReady = true;
             }
@@ -56,6 +130,13 @@ exportObj.getServiceStatus = function () {
         isArduinoReady: this.isArduinoReady,
         isKafkaReady: this.isKafkaReady
     };
+};
+
+exportObj.getUpdatedData = function () {
+    return {
+        rfid: updatedDataFilter(RECORD),
+        kafka: updatedDataFilter(KAFKA_RESPONSE)
+    }
 };
 
 module.exports.entity = exportObj;
