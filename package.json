@@ -5,17 +5,18 @@
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",
     "ejs": "^2.4.2",
-    "cookie-parser": "^1.4.3",
-    "less-middleware": "^1.0.4",
     "express": "^4.13.4",
-    "morgan": "^1.7.0",
     "kafka-node": "^0.5.8",
-    "when": "^3.7.7",
+    "kafka-node-slim": "^0.1.0",
+    "less-middleware": "^1.0.4",
+    "morgan": "^1.7.0",
     "node-cache": "^4.1.0",
     "serialport": "^4.0.1",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "when": "^3.7.7"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,0 +1,9 @@
+{
+  "os": "win",
+  "serialPort": {
+    "win": "COM6",
+    "mac": "/dev/cu.usbmodem1411"
+  },
+  "kafka": "",
+  "location": 0
+}

@@ -1,8 +1,8 @@
 var SerialPort = require('serialport');
-var port = new SerialPort('/dev/cu.usbmodem1411');
+var port = new SerialPort('COM5');
 port.on('open', function () {
     port.on('data', function (chunk) {
-        console.log(chunk);
+        console.log(chunk.toString('utf8'));
     });
 });
 
