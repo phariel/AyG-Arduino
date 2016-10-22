@@ -6,7 +6,6 @@ var config = require('../config.json');
 var exportObj = {};
 var lastTimeRfid;
 var lastTimeKafka;
-var location;
 
 const RECORD = 'record';
 const KAFKA_RESPONSE = 'kafkaResponse';

@@ -1,4 +1,4 @@
-var kafka = require('kafka-node');
+var kafka = require('kafka-node-slim');
 var when = require('when');
 var config = require('../config.json');
 
