@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/start', function (req, res) {
-    core.start(req.body.kafkaUrl, req.body.locationId);
+    core.start(req.body.startSignal);
     res.end("{}");
 });
 

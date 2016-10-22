@@ -1,0 +1,5 @@
+{
+  "serialPort": "/dev/cu.usbmodem1421",
+  "kafkaUrl": "localhost:2181",
+  "locationId": 0
+}

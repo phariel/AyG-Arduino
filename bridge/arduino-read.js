@@ -1,5 +1,6 @@
 var SerialPort = require('serialport');
 var when = require('when');
+var config = require('../config.json');
 var exportObj = {};
 
 exportObj.generate = function (callback) {
@@ -7,7 +8,7 @@ exportObj.generate = function (callback) {
     var data = "";
 
     exportObj.isReady = false;
-    var port = new SerialPort('/dev/cu.usbmodem1411');
+    var port = new SerialPort(config.serialPort);
     port.on('open', function () {
         exportObj.isReady = true;
         generateDeferred.resolve('ready');

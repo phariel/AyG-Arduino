@@ -1,9 +1,7 @@
 define(['jquery', 'moment'], function ($, moment) {
     return function () {
-        var $url = $('.text-kafka');
         var $start = $('.btn-start');
         var $result = $('.ayg-result');
-        var $location = $('.text-location');
         var interval;
 
         var addContent = function (text) {
@@ -47,27 +45,16 @@ define(['jquery', 'moment'], function ($, moment) {
             });
         };
 
-        var parseInputValue = function ($input) {
-            var val = $input.val();
-            if (val.length === 0) {
-                val = $input.attr('placeholder');
-            }
-            return val;
-        };
-
         $start.on('click', function () {
             $.ajax({
                 method: 'POST',
                 url: '/start',
                 dataType: 'json',
                 data: {
-                    kafkaUrl: parseInputValue($url),
-                    locationId: parseInputValue($location)
+                    startSignal: true
                 }
             }).done(function (data) {
                 $start.attr('disabled', 'disabled');
-                $url.attr('disabled', 'disabled');
-                $location.attr('disabled', 'disabled');
                 addContent('Service starting...');
                 interval = setInterval(function () {
                     getStartStatus();
