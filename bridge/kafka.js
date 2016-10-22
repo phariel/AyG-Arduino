@@ -1,5 +1,6 @@
 var kafka = require('kafka-node');
 var when = require('when');
+var config = require('../config.json');
 
 var Producer = kafka.Producer;
 var payloads = [
@@ -20,8 +21,9 @@ var printData = function (data) {
     console.log('=====================');
 };
 
-exportObj.generate = function (clientUrl, sendCallback) {
-    var client = new kafka.Client(clientUrl);
+exportObj.generate = function (sendCallback) {
+    console.log(config.kafkaUrl);
+    var client = new kafka.Client(config.kafkaUrl);
     var generateDeferred = when.defer();
 
     exportObj.isReady = false;

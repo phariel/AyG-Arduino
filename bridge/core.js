@@ -2,6 +2,7 @@ var arduino = require('./arduino-read').entity;
 var kafka = require('./kafka').entity;
 var NodeCache = require('node-cache');
 var rfid = new NodeCache();
+var config = require('../config.json');
 var exportObj = {};
 var lastTimeRfid;
 var lastTimeKafka;
@@ -34,7 +35,8 @@ var parseData = function (data) {
 var kafkaSend = function (data) {
     var sendData = {
         rfidTagId: data,
-        locationId: location
+        locationId: config.locationId,
+        timestamp: Date.now()
     };
     kafka.send(sendData);
 };
@@ -106,22 +108,23 @@ exportObj.onData = function (data) {
     rfid.set(RECORD, rfidRecord);
 };
 
-exportObj.start = function (kafkaUrl, locationId) {
-    location = locationId;
-    if (!exportObj.isArduinoReady) {
-        arduino.generate(this.onData).then(function (status) {
-            if (status === "ready") {
-                exportObj.isArduinoReady = true;
-            }
-        });
-    }
+exportObj.start = function (signal) {
+    if (signal) {
+        if (!exportObj.isArduinoReady) {
+            arduino.generate(this.onData).then(function (status) {
+                if (status === "ready") {
+                    exportObj.isArduinoReady = true;
+                }
+            });
+        }
 
-    if (!exportObj.isKafkaReady) {
-        kafka.generate(kafkaUrl, kafkaSendCallback).then(function (status) {
-            if (status === "ready") {
-                exportObj.isKafkaReady = true;
-            }
-        });
+        if (!exportObj.isKafkaReady) {
+            kafka.generate(kafkaSendCallback).then(function (status) {
+                if (status === "ready") {
+                    exportObj.isKafkaReady = true;
+                }
+            });
+        }
     }
 };
 
