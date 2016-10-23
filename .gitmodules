@@ -1,3 +1,6 @@
-[submodule "rfid-libs"]
-	path = rfid-libs
-	url = https://github.com/miguelbalboa/rfid.git
+[submodule "arduino-libs/MFRC522-RFID-sensor"]
+	path = arduino-libs/MFRC522-RFID-sensor
+	url = https://github.com/phariel/rfid.git
+[submodule "arduino-libs/MPU6050-IMU-sensor"]
+	path = arduino-libs/MPU6050-IMU-sensor
+	url = https://github.com/phariel/MPU6050-Arduino.git
