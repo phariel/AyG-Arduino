@@ -19,3 +19,7 @@ Visit: http://localhost:3000
 ![MPU6050](https://raw.githubusercontent.com/phariel/MPU6050-Arduino/master/conn.png)
 
 [Tutorial](https://diyhacking.com/arduino-mpu-6050-imu-sensor-tutorial/)
+
+#### Arduino UNO - FS1000A sensor connection
+
+![FS1000A](https://raw.githubusercontent.com/phariel/FS1000A-Arduino/master/conn.png)
