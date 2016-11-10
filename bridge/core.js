@@ -13,24 +13,6 @@ const KAFKA_RESPONSE = 'kafkaResponse';
 rfid.set(RECORD, []);
 rfid.set(KAFKA_RESPONSE, []);
 
-var hexToString = function (data) {
-    var val = '';
-    var arr = data.split(':');
-    arr.forEach(function (v) {
-        if (v !== "20") {
-            val += String.fromCharCode(parseInt(v, 16));
-        }
-    });
-    return val;
-};
-
-var parseData = function (data) {
-    var r = /\[(.+?)\]/g;
-    data = data.match(r);
-    data = data[0].replace('[', '').replace(']', '');
-    return hexToString(data);
-};
-
 var kafkaSend = function (data) {
     var sendData = {
         rfidTagId: data,
@@ -97,7 +79,6 @@ var updatedDataFilter = function (type) {
 exportObj.onData = function (data) {
     var rfidRecord = rfid.get(RECORD);
 
-    data = parseData(data);
     kafkaSend(data);
 
     rfidRecord.push({

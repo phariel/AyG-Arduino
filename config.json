@@ -1,5 +1,7 @@
 {
-  "serialPort": "/dev/cu.usbmodem1421",
-  "kafkaUrl": "localhost:2181",
-  "locationId": 0
+  "serialPort": "COM4",
+  "isLongRangeRfid": false,
+  "kafkaUrl": "10.59.6.97:2181/kafka",
+  "locationId": 0,
+  "localPort": 3000
 }
