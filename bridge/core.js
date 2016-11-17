@@ -79,6 +79,11 @@ var updatedDataFilter = function (type) {
 exportObj.onData = function (data) {
     var rfidRecord = rfid.get(RECORD);
 
+    data = config.idMapping[data];
+    if (!data) {
+        data = config.idMapping.default;
+    }
+
     kafkaSend(data);
 
     rfidRecord.push({
