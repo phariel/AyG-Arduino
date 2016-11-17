@@ -33,7 +33,7 @@ exportObj.generate = function (callback) {
         port.on('data', function (chunk) {
             data += chunk.toString('utf8');
             if (config.isLongRangeRfid) {
-                data = data.substring(1, data.length - 1);
+                data = data.substring(1, data.length - 2);
                 callback(data);
                 data = "";
             } else {
