@@ -99,6 +99,7 @@ exportObj.start = function (signal) {
             arduino.generate(this.onData).then(function (status) {
                 if (status === "ready") {
                     exportObj.isArduinoReady = true;
+                    console.log("Arduino ready!");
                 }
             });
         }
@@ -107,6 +108,7 @@ exportObj.start = function (signal) {
             kafka.generate(kafkaSendCallback).then(function (status) {
                 if (status === "ready") {
                     exportObj.isKafkaReady = true;
+                    console.log("Kafka ready!");
                 }
             });
         }
