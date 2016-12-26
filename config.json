@@ -1,12 +1,13 @@
 {
-  "serialPort": "COM5",
-  "isLongRangeRfid": true,
-  "kafkaUrl": "10.59.6.97:2181/kafka",
-  "locationId": 3,
-  "localPort": 3000,
-  "idMapping": {
-    "default": 1,
-    "0105CCE08C": 1,
-    "0105CCE070": 2
-  }
+    "serialPort": "/dev/cu.wchusbserial14110",
+    "isLongRangeRfid": true,
+    "kafkaUrl": "10.59.6.97:2181/kafka",
+    "locationId": 0,
+    "localPort": 3000,
+    "idMapping": {
+        "default": 1,
+        "0105CCE070": 1,
+        "0105CCE08C": 2,
+        "0105CCC3B6": 3
+    }
 }
